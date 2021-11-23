@@ -5,7 +5,7 @@ Repository contains kubernetes resources to run confluent platform along with Mo
 Repository also allows secrets to be encrypted using mozilla sops and flux. 
 
 
-# Prerequisite
+# Steps to run
 
 ## Fork the repository
 Fork the repository to commit files to sync to your own cluster. Concept is repo is synced to a Kubernetes cluster for more information please read about [GitOps](https://opengitops.dev/)
@@ -93,9 +93,11 @@ Repository uses gpg keys encryption for secrets, with flux [SOPS Mozilla](https:
 
 Run `./setup.sh` which would create a secret key and apply to kubernetes.
 
+## Commit the changed files
 
+Commit all files which are changed by `setup.sh`, these would include encrypted secrets.
 
-# Configure flux to run with Git repo
+## Configure flux to run with Git repo
 
 Please update the repository name 
 
@@ -117,9 +119,9 @@ flux reconcile source git flux-system
 flux reconcile kustomization flux-system
 
 
-## reset the demo
+## Reset commands
 
-### reset offsets
+### Reset offsets
 
 
 
@@ -131,7 +133,7 @@ kafka-consumer-groups --command-config 01_confluent/cloud-client.txt --bootstrap
 kafka-consumer-groups --command-config 01_confluent/cloud-client.txt --bootstrap-server $CONFLUENT_CLOUD_BOOTSTRAP_SERVER_URL --group connect-mongo-sink-txns --reset-offsets --to-earliest --all-topics
 ```
 
-### reset connect
+### Reset connect
 
 Stop publisher
 
