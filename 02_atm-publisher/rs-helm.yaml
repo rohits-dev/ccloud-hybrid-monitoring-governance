@@ -1,0 +1,8 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: HelmRepository
+metadata:
+  name: rshelm
+  namespace: confluent
+spec:
+  url: https://rohits.jfrog.io/artifactory/rs-helm/
+  interval: 10m

@@ -1,0 +1,24 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Connect
+metadata:
+  name: connect
+  namespace: confluent
+spec:
+  replicas: 1
+  image:
+    application: rohits.jfrog.io/default-docker-virtual/rohitshrivastava04/kafka_connect_image:main
+    #application: confluentinc/cp-server-connect:7.0.0
+    init: confluentinc/confluent-init-container:2.2.0
+  mountedSecrets:
+    - secretRef: cloud-sr
+  dependencies:
+    kafka:
+      bootstrapEndpoint: pkc-lq8gm.westeurope.azure.confluent.cloud:9092
+      authentication:
+        type: plain
+        jaasConfig:
+          secretRef: cloud-plain
+      tls:
+        enabled: true
+        ignoreTrustStoreConfig: true

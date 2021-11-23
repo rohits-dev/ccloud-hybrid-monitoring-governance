@@ -1,0 +1,23 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Connector
+metadata:
+  name: mongo-sink-accounts
+  namespace: confluent
+spec:
+  class: "io.confluent.kafka.connect.datagen.DatagenConnector"
+  taskMax: 1
+  connectClusterRef:
+    name: connect
+  configs:
+    connector.class: "com.mongodb.kafka.connect.MongoSinkConnector"
+    database: "myDb"
+    topics: "asgard.demo.accounts"
+    name: "mongo-sink-accounts"
+    connection.uri: "mongodb://my-mongodb-user:admin@mongodb-replica-set-0.mongodb-replica-set-svc.mongodb.svc.cluster.local:27017,mongodb-replica-set-1.mongodb-replica-set-svc.mongodb.svc.cluster.local:27017,mongodb-replica-set-2.mongodb-replica-set-svc.mongodb.svc.cluster.local:27017"
+    collection: "asgard.demo.accounts"
+    key.converter: "org.apache.kafka.connect.storage.StringConverter"
+    value.converter: "io.confluent.connect.avro.AvroConverter"
+    value.converter.schema.registry.url: "https://psrc-dozoy.westeurope.azure.confluent.cloud"
+    value.converter.schema.registry.basic.auth.credentials.source: "USER_INFO"
+    value.converter.schema.registry.basic.auth.user.info: "${file:/mnt/secrets/cloud-sr/basic.txt:username}:${file:/mnt/secrets/cloud-sr/basic.txt:password}"
+    

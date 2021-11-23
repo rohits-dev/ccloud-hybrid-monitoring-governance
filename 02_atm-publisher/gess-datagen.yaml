@@ -1,0 +1,24 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: gess-datagen
+  namespace: confluent
+spec:
+  chart:
+    spec:
+      chart: gess-datagen
+      sourceRef:
+        kind: HelmRepository
+        name: rshelm
+      version: '>=0.1.2'
+  install: {}
+  interval: 10m0s
+  values:
+    kafka:
+      topic_name: atm-txns-gess
+      bootstrap_server: pkc-lq8gm.westeurope.azure.confluent.cloud:9092
+      config: 
+        secretName: cloud-client 
+        fileName: client.config
+

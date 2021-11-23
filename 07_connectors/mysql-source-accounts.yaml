@@ -1,0 +1,47 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Connector
+metadata:
+  name: mysql-source-accounts
+  namespace: confluent
+spec:
+  class: "io.confluent.kafka.connect.datagen.DatagenConnector"
+  taskMax: 1
+  connectClusterRef:
+    name: connect
+  configs:
+    connector.class: "io.debezium.connector.mysql.MySqlConnector"
+    key.converter: "io.confluent.connect.avro.AvroConverter"
+    key.converter.schema.registry.url: "https://psrc-dozoy.westeurope.azure.confluent.cloud"
+    key.converter.schema.registry.basic.auth.credentials.source: "USER_INFO"
+    key.converter.schema.registry.basic.auth.user.info: "${file:/mnt/secrets/cloud-sr/basic.txt:username}:${file:/mnt/secrets/cloud-sr/basic.txt:password}"
+    value.converter: "io.confluent.connect.avro.AvroConverter"
+    value.converter.schema.registry.url: "https://psrc-dozoy.westeurope.azure.confluent.cloud"
+    value.converter.schema.registry.basic.auth.credentials.source: "USER_INFO"
+    value.converter.schema.registry.basic.auth.user.info: "${file:/mnt/secrets/cloud-sr/basic.txt:username}:${file:/mnt/secrets/cloud-sr/basic.txt:password}"
+    database.hostname: "mysql.mysql"
+    database.port: "3306"
+    database.user: "debezium"
+    database.password: "dbz"
+    database.allowPublicKeyRetrieval: "true"
+    database.server.id: "42"
+    database.server.name: "asgard"
+    table.whitelist: "demo.accounts"
+    database.history.kafka.bootstrap.servers: "pkc-lq8gm.westeurope.azure.confluent.cloud:9092"
+    database.history.producer.sasl.jaas.config: "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"${file:/mnt/secrets/cloud-plain/plain.txt:username}\" password=\"${file:/mnt/secrets/cloud-plain/plain.txt:password}\";"
+    database.history.consumer.sasl.jaas.config: "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"${file:/mnt/secrets/cloud-plain/plain.txt:username}\" password=\"${file:/mnt/secrets/cloud-plain/plain.txt:password}\";"
+    database.history.producer.security.protocol: "SASL_SSL"
+    database.history.consumer.security.protocol: "SASL_SSL"
+    database.history.producer.sasl.mechanism: "PLAIN"
+    database.history.consumer.sasl.mechanism: "PLAIN"
+
+    database.history.kafka.topic: "dbhistory.demo"
+    include.schema.changes: "true"
+    transforms: "unwrap,InsertTopic,InsertSourceDetails"
+    transforms.unwrap.type: "io.debezium.transforms.ExtractNewRecordState"
+    transforms.InsertTopic.type: "org.apache.kafka.connect.transforms.InsertField$Value"
+    transforms.InsertTopic.topic.field: "messagetopic"
+    transforms.InsertSourceDetails.type: "org.apache.kafka.connect.transforms.InsertField$Value"
+    transforms.InsertSourceDetails.static.field: "messagesource"
+    transforms.InsertSourceDetails.static.value: "Debezium CDC from MySQL on asgard"
+   
+    

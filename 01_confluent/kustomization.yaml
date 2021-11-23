@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - namespace.yaml
+  - confluent-operator-release.yaml
+  - confluent-control-center.yaml
+  - cloud-plain.yaml
+  - cloud-key.yaml
+  - cloud-sr.yaml
+  - cloud-client.yaml
+  - connect.yaml
+  - kafka.yaml

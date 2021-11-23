@@ -1,0 +1,21 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Connector
+metadata:
+  name: mongo-sink-txns
+  namespace: confluent
+spec:
+  class: "io.confluent.kafka.connect.datagen.DatagenConnector"
+  taskMax: 1
+  connectClusterRef:
+    name: connect
+  configs:
+    connector.class: "com.mongodb.kafka.connect.MongoSinkConnector"
+    database: "myDb"
+    topics: "atm-txns-gess"
+    name: "mongo-sink-txns"
+    connection.uri: "mongodb://my-mongodb-user:admin@mongodb-replica-set-0.mongodb-replica-set-svc.mongodb.svc.cluster.local:27017,mongodb-replica-set-1.mongodb-replica-set-svc.mongodb.svc.cluster.local:27017,mongodb-replica-set-2.mongodb-replica-set-svc.mongodb.svc.cluster.local:27017"
+    collection: "atm-txns-gess"
+    key.converter: "org.apache.kafka.connect.storage.StringConverter"
+    value.converter: "org.apache.kafka.connect.storage.StringConverter"
+   
+    
