@@ -1,6 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - mongo-sink-accounts.yaml
+  #- mongo-sink-accounts.yaml
   - mongo-sink-txns.yaml
   - mysql-source-accounts.yaml
