@@ -20,21 +20,21 @@ spec:
     server:
       - confluent.metrics.topic.max.message.bytes=8388608  
   dependencies:
-    # kafka:
-    #   bootstrapEndpoint: pkc-lq8gm.westeurope.azure.confluent.cloud:9092
-    #   authentication:
-    #     type: plain
-    #     jaasConfig:
-    #       secretRef: cloud-plain
-    #   tls:
-    #     enabled: true
-    #     ignoreTrustStoreConfig: true 
-    # schemaRegistry:
-    #   url: https://psrc-dozoy.westeurope.azure.confluent.cloud
-    #   authentication:
-    #     type: basic
-    #     basic:
-    #       secretRef: cloud-sr
+    kafka:
+      bootstrapEndpoint: pkc-lq8gm.westeurope.azure.confluent.cloud:9092
+      authentication:
+        type: plain
+        jaasConfig:
+          secretRef: cloud-plain
+      tls:
+        enabled: true
+        ignoreTrustStoreConfig: true 
+    schemaRegistry:
+      url: https://psrc-dozoy.westeurope.azure.confluent.cloud
+      authentication:
+        type: basic
+        basic:
+          secretRef: cloud-sr
     # ksqldb:
     # - name: ksql-dev
     #   url: http://ksqldb.confluent.svc.cluster.local:8088
